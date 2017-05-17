@@ -11,7 +11,7 @@
             },
             @if($model->title)
                 title: {
-                    text:  "{{ $model->title }}"
+                    text:  "{!! $model->title !!}"
                 },
             @endif
             @if(!$model->credits)
@@ -28,15 +28,24 @@
            xAxis: {
                 categories: [
                     @foreach($model->labels as $label)
-                         "{{ $label }}",
+                         "{!! $label !!}",
                     @endforeach
                 ],
-                crosshair: true
+            },
+            yAxis: {
+                title: {
+                    text: "{!! $model->y_axis_title === null ? $model->element_label : $model->y_axis_title !!}"
+                },
+            },
+            legend: {
+                @if(!$model->legend)
+                    enabled: false,
+                @endif
             },
             series: [
                 @for ($i = 0; $i < count($model->datasets); $i++)
                     {
-                        name:  "{{ $model->datasets[$i]['label'] }}",
+                        name:  "{!! $model->datasets[$i]['label'] !!}",
                         @if($model->colors && count($model->colors) > $i)
                             color: "{{ $model->colors[$i] }}",
                         @endif

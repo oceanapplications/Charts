@@ -10,7 +10,7 @@
         data: {
             labels: [
                 @foreach($model->labels as $label)
-                    "{{ $label }}",
+                    "{!! $label !!}",
                 @endforeach
             ],
             datasets: [{
@@ -26,7 +26,7 @@
                         @endforeach
                     @else
                         @foreach($model->values as $dta)
-                            "{{ sprintf('#%06X', mt_rand(0, 0xFFFFFF)) }}"
+                            "{{ sprintf('#%06X', mt_rand(0, 0xFFFFFF)) }}",
                         @endforeach
                     @endif
                 ],
@@ -38,7 +38,7 @@
             @if($model->title)
                 title: {
                     display: true,
-                    text: "{{ $model->title }}",
+                    text: "{!! $model->title !!}",
                     fontSize: 20,
                 }
             @endif

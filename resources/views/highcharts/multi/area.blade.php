@@ -8,7 +8,7 @@
             },
             @if($model->title)
                 title: {
-                    text:  "{{ $model->title }}",
+                    text:  "{!! $model->title !!}",
                     x: -20 //center
                 },
             @endif
@@ -16,35 +16,28 @@
                 credits: {
                     enabled: false
                 },
-            @endif    
+            @endif
             xAxis: {
                 categories: [
                     @foreach($model->labels as $label)
-                        "{{ $label }}",
+                        "{!! $label !!}",
                     @endforeach
                 ]
             },
             yAxis: {
                 title: {
-                    text: "{{ $model->element_label }}"
+                    text: "{!! $model->y_axis_title === null ? $model->element_label : $model->y_axis_title !!}"
                 },
-                plotLines: [{
-                    value: 0,
-                    height: 0.5,
-                    width: 1,
-                    color: '#808080'
-                }]
             },
             legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'middle',
-                borderWidth: 0
+                @if(!$model->legend)
+                    enabled: false,
+                @endif
             },
             series: [
                 @for ($i = 0; $i < count($model->datasets); $i++)
                     {
-                        name:  "{{ $model->datasets[$i]['label'] }}",
+                        name:  "{!! $model->datasets[$i]['label'] !!}",
                         @if($model->colors && count($model->colors) > $i)
                             color: "{{ $model->colors[$i] }}",
                         @endif

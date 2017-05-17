@@ -3,6 +3,11 @@
         Highcharts.setOptions({global: { useUTC: false } })
 
         {{ $model->id }} = new Highcharts.Chart({
+            colors: [
+                @foreach($model->colors as $c)
+                    "{{ $c }}",
+                @endforeach
+            ],
             chart: {
                 renderTo:  "{{ $model->id }}",
                 type: 'column',
@@ -13,7 +18,7 @@
             },
             @if($model->title)
                 title: {
-                    text:  "{{ $model->title }}",
+                    text:  "{!! $model->title !!}",
                     x: -20 //center
                 },
             @endif
@@ -27,7 +32,7 @@
             },
             yAxis: {
                 title: {
-                    text: "{{ $model->element_label }}"
+                    text: "{!! $model->element_label !!}"
                 },
                 plotLines: [{
                     value: 0,
@@ -36,21 +41,18 @@
                     color: '#808080'
                 }]
             },
-            @if($model->colors) {
-                plotOptions: {
-                    series: {
-                        color: "{{ $model->colors[0] }}"
-                    }
+            plotOptions: {
+                series: {
+                    colorByPoint: true,
                 },
-            @endif
+            },
             legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'middle',
-                borderWidth: 0
+                @if(!$model->legend)
+                    enabled: false,
+                @endif
             },
             series: [{
-                name: "{{ $model->element_label }}",
+                name: "{!! $model->element_label !!}",
                 data: [],
                 pointStart: new Date().getTime(),
                 pointInterval: {{ $model->interval }},

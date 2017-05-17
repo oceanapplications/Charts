@@ -4,7 +4,6 @@ namespace ConsoleTVs\Charts;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Collective\Html\HtmlServiceProvider;
 
 class ChartsServiceProvider extends ServiceProvider
 {
@@ -20,12 +19,10 @@ class ChartsServiceProvider extends ServiceProvider
         ], 'charts_config');
 
         $this->publishes([
-            __DIR__.'/assets' => public_path('vendor/consoletvs/charts'),
-        ], 'charts_assets');
+            __DIR__.'/../resources/views' => base_path('resources/views/vendor/charts'),
+        ], 'charts_views');
 
-        $this->publishes([
-            __DIR__.'/../resources/views' => base_path('resources/views/vendor/consoletvs/charts'),
-        ]);
+        $this->app->register('Jenssegers\\Date\\DateServiceProvider');
 
         $this->registerBladeDirectives();
     }
@@ -36,8 +33,6 @@ class ChartsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/charts.php', 'charts');
-
-        $this->app->register(HtmlServiceProvider::class);
 
         $this->app->singleton(Builder::class, function ($app) {
             return new Builder();
@@ -51,7 +46,7 @@ class ChartsServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return [Builder::class, HtmlServiceProvider::class];
+        return [Builder::class];
     }
 
     private function registerBladeDirectives()
